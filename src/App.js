@@ -1,6 +1,8 @@
 import React, { Component, useState, useEffect } from 'react'
+import Header from './components/Header'
 import words from './data.json'
 import alphabet from './letters.json'
+import styled from 'styled-components'
 import step0 from './images/step_0.png'
 import step1 from './images/step_1.png'
 import step2 from './images/step_2.png'
@@ -37,11 +39,12 @@ const App = () => {
 
   return (
     <>
-      <main>
-        <section className="word">
+      <MainContent>
+        <Header text="Snowman - A holiday-style Hangman" />
+        <RandomWord className="word">
           {letters.map((letter) => {
             return (
-              <div className="space">
+              <Underline>
                 <div
                   className={
                     clickedLetters.includes(letter.toUpperCase())
@@ -52,30 +55,73 @@ const App = () => {
                 >
                   {letter}
                 </div>
-              </div>
+              </Underline>
             )
           })}
-        </section>
-        <section className="buttons">
+        </RandomWord>
+        <Buttons>
           {alphabet.map((letter) => {
             return (
-              <button
+              <Button
                 onClick={onLetterClicked}
                 className="button"
                 key={letter}
                 value={letter}
               >
                 {letter}
-              </button>
+              </Button>
             )
           })}
-        </section>
-        <section className="snowman">
-          <img width="300" src={images[revealedLetters.length]} alt="" />
-        </section>
-      </main>
+        </Buttons>
+      </MainContent>
+      <SnowmanSection>
+        <img width="300" src={images[revealedLetters.length]} alt="" />
+      </SnowmanSection>
     </>
   )
 }
 
 export default App
+const MainContent = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const RandomWord = styled.section`
+  display: flex;
+  /* height: 8rem; */
+`
+const Underline = styled.div`
+  border-bottom: 0.5rem solid #000;
+  margin: 5rem 1rem;
+  width: 1.5rem;
+  text-align: center;
+`
+const Buttons = styled.section`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+`
+
+const Button = styled.button`
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border: 0.1rem solid #61dafb;
+  color: #61dafb;
+  background: #fff;
+  transition: 0.3s ease;
+  :hover {
+    cursor: pointer;
+    border: 0.1rem solid #fff;
+    color: #fff;
+    background: #61dafb;
+    transform: translateY(-0.5rem);
+    box-shadow: 0 0.1rem 0.2rem #111;
+  }
+`
+
+const SnowmanSection = styled.section`
+  display: flex;
+  align-items: flex-end;
+`
