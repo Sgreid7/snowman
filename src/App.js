@@ -37,6 +37,12 @@ const App = () => {
     }
   }
 
+  const onResetGame = (e) => {
+    setClickedLetters((oldLetter) => [])
+    setRevealedLetters((oldLetter) => [])
+    setRandomWord(words[Math.ceil(Math.random() * words.length)])
+  }
+
   return (
     <>
       <MainContent>
@@ -65,6 +71,9 @@ const App = () => {
               <Button
                 onClick={onLetterClicked}
                 className="button"
+                disabled={
+                  clickedLetters.includes(letter.toUpperCase()) ? true : false
+                }
                 key={letter}
                 value={letter}
               >
@@ -73,6 +82,7 @@ const App = () => {
             )
           })}
         </Buttons>
+        <button onClick={onResetGame}>RESET</button>
       </MainContent>
       <SnowmanSection>
         <img width="300" src={images[revealedLetters.length]} alt="" />
@@ -118,6 +128,9 @@ const Button = styled.button`
     background: #61dafb;
     transform: translateY(-0.5rem);
     box-shadow: 0 0.1rem 0.2rem #111;
+  }
+  :disabled {
+    color: #000;
   }
 `
 
