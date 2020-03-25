@@ -16,7 +16,7 @@ const App = () => {
   // set hooks
   const [clickedLetters, setClickedLetters] = useState([])
   const [randomWord, setRandomWord] = useState('')
-  const [revealedLetters, setRevealedLetters] = useState([])
+  const [incorrectlyGuessedLetters, setIncorrectlyGuessedLetters] = useState([])
   const images = [step0, step1, step2, step3, step4, step5, step6, step7]
 
   const getRandomWord = async () => {
@@ -38,15 +38,15 @@ const App = () => {
     e.target.disabled = true
     const value = e.target.value
     setClickedLetters((oldLetter) => [...oldLetter, value])
-    if (letters.includes(value.toLowerCase())) {
+    if (!letters.includes(value.toLowerCase())) {
       // set revealed letters
-      setRevealedLetters((oldLetter) => [...oldLetter, value])
+      setIncorrectlyGuessedLetters((oldLetter) => [...oldLetter, value])
     }
   }
 
   const onResetGame = (e) => {
-    setClickedLetters((oldLetter) => [])
-    setRevealedLetters((oldLetter) => [])
+    setClickedLetters([])
+    setIncorrectlyGuessedLetters([])
     getRandomWord()
   }
 
@@ -79,7 +79,10 @@ const App = () => {
                 onClick={onLetterClicked}
                 className="button"
                 disabled={
-                  clickedLetters.includes(letter.toUpperCase()) ? true : false
+                  clickedLetters.includes(letter.toUpperCase()) ||
+                  incorrectlyGuessedLetters.length > 6
+                    ? true
+                    : false
                 }
                 key={letter}
                 value={letter}
@@ -89,10 +92,14 @@ const App = () => {
             )
           })}
         </Buttons>
-        <button onClick={onResetGame}>RESET</button>
+        <ResetButton onClick={onResetGame}>RESET</ResetButton>
       </MainContent>
       <SnowmanSection>
-        <img width="300" src={images[revealedLetters.length]} alt="" />
+        <img
+          width="300"
+          src={images[incorrectlyGuessedLetters.length]}
+          alt=""
+        />
       </SnowmanSection>
     </>
   )
@@ -138,6 +145,33 @@ const Button = styled.button`
   }
   :disabled {
     color: #000;
+    cursor: auto;
+    border: none;
+    transform: translateY(0);
+    box-shadow: none;
+    background: #fff;
+  }
+`
+
+const ResetButton = styled.button`
+  color: #c54245;
+  background: #fff;
+  padding: 0.4rem 0.8rem;
+  border: 0.15rem solid #c54245;
+  margin: 1rem;
+  transition: 0.3s ease;
+  font-size: 1.2rem;
+  :hover {
+    cursor: pointer;
+    color: #fff;
+    background: #c54245;
+    border: 0.15rem solid #fff;
+    transform: rotate(5deg);
+    box-shadow: 0 0.15rem 0.15rem #111;
+    border-radius: 0.5rem;
+  }
+  :focus {
+    outline: none;
   }
 `
 
