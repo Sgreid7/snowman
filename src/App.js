@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react'
 import Header from './components/Header'
-import words from './data.json'
+import axios from 'axios'
 import alphabet from './letters.json'
 import styled from 'styled-components'
 import step0 from './images/step_0.png'
@@ -19,9 +19,16 @@ const App = () => {
   const [revealedLetters, setRevealedLetters] = useState([])
   const images = [step0, step1, step2, step3, step4, step5, step6, step7]
 
+  const getRandomWord = async () => {
+    const url = 'https://sdg-words.herokuapp.com/api/words/random'
+    const response = await axios.get(url)
+    const generatedWord = response.data.word
+    setRandomWord(generatedWord)
+  }
+
   useEffect(() => {
     // when component renders, set a random word
-    setRandomWord(words[Math.ceil(Math.random() * words.length)])
+    getRandomWord()
   }, [])
 
   const letters = randomWord.split('')
@@ -40,7 +47,7 @@ const App = () => {
   const onResetGame = (e) => {
     setClickedLetters((oldLetter) => [])
     setRevealedLetters((oldLetter) => [])
-    setRandomWord(words[Math.ceil(Math.random() * words.length)])
+    getRandomWord()
   }
 
   return (
@@ -50,7 +57,7 @@ const App = () => {
         <RandomWord className="word">
           {letters.map((letter) => {
             return (
-              <Underline>
+              <Underline key={letter}>
                 <div
                   className={
                     clickedLetters.includes(letter.toUpperCase())
