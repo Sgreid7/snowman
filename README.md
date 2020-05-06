@@ -14,7 +14,6 @@ A snowman themed variation of a popular game, Hangman. Built with React.
 - [HOOKS](https://reactjs.org/docs/hooks-intro.html)
 - [FUNCTIONAL COMPONENTS](https://reactjs.org/docs/components-and-props.html)
 - [STYLED COMPONENTS](https://styled-components.com/)
-- [AXIOS](https://github.com/axios/axios)
 - [API INTEGRATION](https://sdg-words.herokuapp.com/api/words/random)
 
 # Requirements
